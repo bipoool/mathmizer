@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { RefreshCw, Eye, EyeOff, ChevronRight, Sparkles } from 'lucide-react';
 import { generateProblem } from '../utils/problemGenerator';
 
-function Challenge({ difficulty, numberCount, onCorrect, onWrong }) {
+function Challenge({ difficulty, numberCount, selectedOperators, onCorrect, onWrong }) {
   const [problem, setProblem] = useState(null);
   const [showAnswer, setShowAnswer] = useState(false);
   const [userAnswer, setUserAnswer] = useState('');
@@ -12,10 +12,10 @@ function Challenge({ difficulty, numberCount, onCorrect, onWrong }) {
 
   useEffect(() => {
     generateNewProblem();
-  }, [difficulty, numberCount]);
+  }, [difficulty, numberCount, selectedOperators]);
 
   const generateNewProblem = () => {
-    const newProblem = generateProblem(difficulty, numberCount);
+    const newProblem = generateProblem(difficulty, numberCount, selectedOperators);
     setProblem(newProblem);
     setShowAnswer(false);
     setUserAnswer('');

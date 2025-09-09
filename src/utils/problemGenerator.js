@@ -23,10 +23,9 @@ const generateNumber = (difficulty) => {
   }
 };
 
-// Generate operation
-const generateOperation = () => {
-  const operations = ['+', '-', '*', '/', '%'];
-  return operations[Math.floor(Math.random() * operations.length)];
+// Generate operation from selected operators
+const generateOperation = (selectedOperators = ['+', '-', '*', '/', '%']) => {
+  return selectedOperators[Math.floor(Math.random() * selectedOperators.length)];
 };
 
 // Calculate result based on operation
@@ -74,7 +73,7 @@ const getOperationDisplay = (operations) => {
 };
 
 // Generate a complete problem
-export const generateProblem = (difficulty, numberCount) => {
+export const generateProblem = (difficulty, numberCount, selectedOperators = ['+', '-', '*', '/', '%']) => {
   const numbers = [];
   const operations = [];
   
@@ -85,7 +84,7 @@ export const generateProblem = (difficulty, numberCount) => {
   
   // Generate operations (one less than numbers)
   for (let i = 0; i < numberCount - 1; i++) {
-    operations.push(generateOperation());
+    operations.push(generateOperation(selectedOperators));
   }
   
   // Build display string and calculate answer
@@ -122,10 +121,10 @@ export const generateProblem = (difficulty, numberCount) => {
 };
 
 // Generate a practice set
-export const generatePracticeSet = (difficulty, numberCount, setSize = 10) => {
+export const generatePracticeSet = (difficulty, numberCount, selectedOperators = ['+', '-', '*', '/', '%'], setSize = 10) => {
   const problems = [];
   for (let i = 0; i < setSize; i++) {
-    problems.push(generateProblem(difficulty, numberCount));
+    problems.push(generateProblem(difficulty, numberCount, selectedOperators));
   }
   return problems;
 };

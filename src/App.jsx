@@ -8,6 +8,7 @@ import './App.css';
 function App() {
   const [difficulty, setDifficulty] = useState('easy');
   const [numberCount, setNumberCount] = useState(2);
+  const [selectedOperators, setSelectedOperators] = useState(['+', '-', '*', '/', '%']);
   const [showSettings, setShowSettings] = useState(false);
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
@@ -71,6 +72,8 @@ function App() {
               setDifficulty={setDifficulty}
               numberCount={numberCount}
               setNumberCount={setNumberCount}
+              selectedOperators={selectedOperators}
+              setSelectedOperators={setSelectedOperators}
               onClose={() => setShowSettings(false)}
             />
           ) : (
@@ -78,6 +81,7 @@ function App() {
               key="challenge"
               difficulty={difficulty}
               numberCount={numberCount}
+              selectedOperators={selectedOperators}
               onCorrect={handleCorrectAnswer}
               onWrong={handleWrongAnswer}
             />

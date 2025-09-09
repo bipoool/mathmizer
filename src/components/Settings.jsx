@@ -1,7 +1,38 @@
 import { motion } from 'framer-motion';
-import { X, Zap, Target, TrendingUp } from 'lucide-react';
+import { X, Zap, Target, TrendingUp, Plus, Minus, Divide, Percent } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
-function Settings({ difficulty, setDifficulty, numberCount, setNumberCount, onClose }) {
+function Settings({ difficulty, setDifficulty, numberCount, setNumberCount, selectedOperators, setSelectedOperators, onClose }) {
+  const [localOperators, setLocalOperators] = useState(selectedOperators);
+
+  useEffect(() => {
+    setLocalOperators(selectedOperators);
+  }, [selectedOperators]);
+
+  const operators = [
+    { value: '+', label: 'Addition', icon: <Plus size={20} />, color: '#10b981' },
+    { value: '-', label: 'Subtraction', icon: <Minus size={20} />, color: '#3b82f6' },
+    { value: '*', label: 'Multiplication', icon: <X size={20} />, color: '#f59e0b' },
+    { value: '/', label: 'Division', icon: <Divide size={20} />, color: '#ef4444' },
+    { value: '%', label: 'Percentage', icon: <Percent size={20} />, color: '#8b5cf6' }
+  ];
+
+  const handleOperatorToggle = (operator) => {
+    if (localOperators.includes(operator)) {
+      // Don't allow unchecking if it's the last operator
+      if (localOperators.length > 1) {
+        setLocalOperators(localOperators.filter(op => op !== operator));
+      }
+    } else {
+      setLocalOperators([...localOperators, operator]);
+    }
+  };
+
+  const handleApply = () => {
+    setSelectedOperators(localOperators);
+    onClose();
+  };
+
   const difficulties = [
     {
       value: 'easy',
@@ -121,6 +152,39 @@ function Settings({ difficulty, setDifficulty, numberCount, setNumberCount, onCl
           </div>
         </div>
 
+        {/* Operator Selection */}
+        <div className="settings-section">
+          <h3>Operations</h3>
+          <p className="section-description">
+            Select which operations to practice (at least one required)
+          </p>
+          
+          <div className="operator-options">
+            {operators.map((op) => (
+              <motion.label
+                key={op.value}
+                className={`operator-option ${localOperators.includes(op.value) ? 'active' : ''}`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <input
+                  type="checkbox"
+                  checked={localOperators.includes(op.value)}
+                  onChange={() => handleOperatorToggle(op.value)}
+                  disabled={localOperators.length === 1 && localOperators.includes(op.value)}
+                />
+                <div className="operator-content">
+                  <span className="operator-icon" style={{ color: op.color }}>
+                    {op.icon}
+                  </span>
+                  <span className="operator-label">{op.label}</span>
+                  <span className="operator-symbol">({op.value})</span>
+                </div>
+              </motion.label>
+            ))}
+          </div>
+        </div>
+
         {/* Preview */}
         <div className="settings-preview">
           <h4>Preview</h4>
@@ -134,7 +198,7 @@ function Settings({ difficulty, setDifficulty, numberCount, setNumberCount, onCl
 
         {/* Apply Button */}
         <motion.button
-          onClick={onClose}
+          onClick={handleApply}
           className="apply-btn"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
