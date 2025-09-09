@@ -39,7 +39,8 @@ const calculate = (a, b, operation) => {
     case '*':
       return a * b;
     case '/':
-      return b !== 0 ? a / b : a; // Avoid division by zero
+      // Keep division results as decimals (round to 2 decimal places)
+      return b !== 0 ? Math.round((a / b) * 100) / 100 : a;
     case '%':
       return b !== 0 ? (a * b) / 100 : 0; // Percentage: a% of b
     default:
@@ -106,19 +107,8 @@ export const generateProblem = (difficulty, numberCount) => {
     }
   }
   
-  // Round the final answer appropriately
-  if (difficulty === 'hard') {
-    result = Math.round(result * 100) / 100;
-  } else if (difficulty === 'medium') {
-    result = Math.round(result);
-  } else {
-    // For easy mode, round to nearest 10 if result is large
-    if (Math.abs(result) >= 100) {
-      result = Math.round(result / 10) * 10;
-    } else {
-      result = Math.round(result);
-    }
-  }
+  // Round the final answer to 2 decimal places for all difficulty levels
+  result = Math.round(result * 100) / 100;
   
   display += ' = ?';
   
