@@ -29,7 +29,8 @@ function Challenge({ difficulty, numberCount, onCorrect, onWrong }) {
 
     const userAnswerNum = parseFloat(userAnswer);
     const correctAnswer = problem.answer;
-    const tolerance = difficulty === 'hard' ? 0.01 : 0;
+    // Allow 0.01 tolerance for all difficulty levels since we're using 2 decimal places
+    const tolerance = 0.01;
     
     if (Math.abs(userAnswerNum - correctAnswer) <= tolerance) {
       setIsCorrect(true);
