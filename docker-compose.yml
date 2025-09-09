@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mathmizer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mathmizer-app
+    ports:
+      - "4173:4173"  # Map to Vite preview port
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    networks:
+      - mathmizer-network
+
+networks:
+  mathmizer-network:
+    driver: bridge
